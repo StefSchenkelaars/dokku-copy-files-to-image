@@ -1,11 +1,15 @@
-# dokku-copy-files-to-image
+# dokku-git-info
+Fetches some information for the revision hash and the git repo and sets it in environment variables. It sets these three (with an example value).
 
-Copies files from the host's `/home/dokku/<APP>/DOKKU_FILES` directory to the `/app` directory of a dokku image before the image is released.
-
-Only affects deploys where buildpacks are in use. Files are not available during the build step.
+```
+GIT_REV=f85239dc961012a3d4de65a69768fbf0432a7617
+GIT_VERSION=1.8.1
+GIT_COMMITDATE=Mon Oct 9 16:47:05 2017 +0200
+```
 
 ## requirements
 
+- git
 - dokku 0.4.0+
 - docker 1.6.x
 
@@ -13,29 +17,5 @@ Only affects deploys where buildpacks are in use. Files are not available during
 
 ```shell
 # on 0.4.x
-dokku plugin:install https://github.com/dokku/dokku-copy-files-to-image.git  copy-files-to-image
+dokku plugin:install https://github.com/StefSchenkelaars/dokku-git-info.git git-info
 ```
-
-## usage
-
-To use, create a `DOKKU_FILES` directory in `/home/dokku/<APP>`. For instance, if we have an application called `lolipop`:
-
-```shell
-mkdir -p /home/dokku/lolipop/DOKKU_FILES
-```
-
-Next, add your files to that directory. You will also need to ensure the `dokku` user has ownership and read access to these files:
-
-```shell
-chown -R dokku:dokku /home/dokku/lolipop/DOKKU_FILES
-chmod -R +r /home/dokku/lolipop/DOKKU_FILES
-```
-
-
-Once that is done, any deploy should automatically add the file to the `/app` directory of the image, and the files will be available during container runs.
-
-### caveats
-
-- Does not copy directories or directory structures
-- Does not copy files prefixed by periods
-- Will not persist mode on copied files

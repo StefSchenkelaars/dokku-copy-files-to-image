@@ -1,4 +1,4 @@
 [plugin]
-description = "dokku plugin to copy files from the host to the built docker image"
-version = "1.0.0"
+description = "dokku plugin set environment variables about git repo"
+version = "0.0.1"
 [plugin.config]
